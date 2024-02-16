@@ -1,29 +1,27 @@
-import * as THREE from 'three'
 
+import * as THREE from 'three';
 
-const canvas = document.getElementById('c');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-const renderizador = new THREE.WebGLRenderer({antialias: true, canvas})
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
 
-const aspectosCamara = {
-    fov: 75,
-    aspecto: 2,
-    cerca: 0.1,
-    lejania: 5,
-}
+/*
+aspectosCamara 
+    fov: ,
+    aspect: tamaño (dimensiones)
+    near: Primer valor del rango de vista
+    far: Segundo valor del rango de vista 
+    
+    (near,far) // este es el rango en el cual se los elementos 
+                  añadidos a la escena se van a mostrar.
+*/
 
-const camara = new THREE.PerspectiveCamera(
-                aspectosCamara.fov,
-                aspectosCamara.aspecto,
-                aspectosCamara.cerca,
-                aspectosCamara.lejania
-                )
 
 // Configurando la posicion inicial de la camara
-camara.position.z = 2;
-
-// Creando la escena
-const escena = new THREE.Scene();
+camera.position.z = 2;
 
 // Creando todo para una geometria
 const dimensionesCuadro = {
@@ -32,7 +30,7 @@ const dimensionesCuadro = {
     profundo: 1,
 }
 
-const geometria = new THREE.BoxGeometry(
+const geometry = new THREE.BoxGeometry(
     dimensionesCuadro.ancho,
     dimensionesCuadro.alto,
     dimensionesCuadro.profundo
@@ -40,10 +38,10 @@ const geometria = new THREE.BoxGeometry(
 
 const material = new THREE.MeshBasicMaterial({color : 0x44aa88})
 
-const figuraCubo = new THREE.Mesh(geometria,material)
+const cubo = new THREE.Mesh(geometry,material)
 
-// Agrego los materiales a la escena
-escena.add(figuraCubo);
+// Agrego las figuras a la escena
+scene.add(cubo);
 
 //Empezamos a renderizar nuestra escena con nuestra camara
-renderizador.render(escena, camara);
+renderer.render(scene, camera);
