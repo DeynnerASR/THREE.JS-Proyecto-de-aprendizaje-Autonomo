@@ -36,12 +36,44 @@ const geometry = new THREE.BoxGeometry(
     dimensionesCuadro.profundo
 )
 
-const material = new THREE.MeshBasicMaterial({color : 0x44aa88})
+const material = new THREE.MeshPhongMaterial({color : 0x44aa88})
 
-const cubo = new THREE.Mesh(geometry,material)
+const cubos = [];
+
+const cubo1 = new THREE.Mesh(geometry,material)
+const cubo2 = new THREE.Mesh(geometry,material)
+
+cubos.push(cubo1)
+cubos.push(cubo2);
 
 // Agrego las figuras a la escena
-scene.add(cubo);
+scene.add(cubo1);
+scene.add(cubo2)
+cubo2.position.x = 2;
 
 //Empezamos a renderizar nuestra escena con nuestra camara
 renderer.render(scene, camera);
+
+function render(time) {
+  time *= 0.001;  // convert time to seconds
+ 
+  cubos.forEach((figura)=>{
+    figura.rotation.x = time;
+    figura.rotation.y = time;  
+  })
+  
+ 
+  renderer.render(scene, camera);
+ 
+  requestAnimationFrame(render);
+}
+
+requestAnimationFrame(render);
+
+//Crando una iluminacion
+
+const color = 0xFFFFFF;
+const intensity = 1;
+const light = new THREE.DirectionalLight(color, intensity);
+light.position.set(-1, 2, 4);
+scene.add(light);
